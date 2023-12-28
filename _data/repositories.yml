@@ -1,12 +1,8 @@
-github_users:
-  - torvalds
-  - alshedivat
-
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - surajk610/simulated-annealing
+  - surajk610/disentangled-learning-by-projection
+  - surajk610/learning-dynamics
+  - surajk610/clip-caption-gen
+  - surajk610/subnetworks-and-superposition
+
+
