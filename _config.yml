@@ -2,7 +2,7 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Suraj Anand's Blog # the website title (if blank, full name will be used instead)
+title: Suraj Anand # the website title (if blank, full name will be used instead)
 first_name: Suraj
 middle_name: 
 last_name: Anand
@@ -11,10 +11,10 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
   My personal website and blog.
 footer_text: >
   Thank you for visiting.
-keywords: jekyll, jekyll-theme, academic-website, portfolio-website  # add your own keywords or leave empty
+keywords:  # add your own keywords or leave empty
 
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: ⚛️  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: logo.png  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
 url: https://surajk610.github.io # the base hostname & protocol for your site
 baseurl:  # the subpath of your site, e.g. /blog/. Leave blank for root
@@ -102,7 +102,6 @@ zotero_username: # your zotero username
 wechat_qr: # filename of your wechat qr-code saved as an image (e.g., wechat-qr.png if saved to assets/img/wechat-qr.png)
 
 contact_note: >
-  You can even add a little note about which of these is the best way to reach you.
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
@@ -134,7 +133,7 @@ related_blog_posts:
 # Follow instructions on https://giscus.app/ to setup for your repo to fill out
 # the information below.
 giscus:
-  repo:                          # <your-github-user-name>/<your-github-repo-name>
+  repo: surajk610/surajk610.github.io      # <your-github-user-name>/<your-github-repo-name>
   repo_id:                       # leave empty or specify your repo_id (see https://giscus.app/) 
   category: Comments             # name of the category under which discussions will be created
   category_id:                   # leave empty or specify your category_id (see https://giscus.app/) 
@@ -271,7 +270,7 @@ display_categories: ['blockquotes'] # these categories will be displayed on the 
 scholar:
 
   last_name: [Anand]
-  first_name: [suraj, A.]
+  first_name: [Suraj]
 
   style: apa
   locale: en
