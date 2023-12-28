@@ -1,10 +1,10 @@
 ---
 layout: page
-title: project 6
-description: a project with no image
-img:
+title: annealing
+description: exploring parallelization models for simulated annealing 
+img: /assets/img/sim-annealing.gif
 importance: 4
-category: fun
+category: fall 2023
 ---
 
 Every project has a beautiful feature showcase page.

@@ -1,11 +1,10 @@
 ---
 layout: page
-title: project 2
-description: a project with a background image and giscus comments
-img: assets/img/3.jpg
-importance: 2
-category: work
-giscus_comments: true
+title: dynamics
+description: exploring the learning dynamics of a transformer
+img: assets/img/learning-dynamics.png
+importance: 1
+category: fall 2023
 ---
 
 Every project has a beautiful feature showcase page.

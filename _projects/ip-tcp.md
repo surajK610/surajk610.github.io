@@ -1,11 +1,10 @@
 ---
 layout: page
-title: project 3
-description: a project that redirects to another website
-img: assets/img/7.jpg
-redirect: https://unsplash.com
+title: tcp-ip
+description: implementing TCP-IP from scratch using UDP as simulated link layer
+img: assets/img/ip-tcp.png
 importance: 3
-category: work
+category: fall 2023
 ---
 
 Every project has a beautiful feature showcase page.

@@ -1,10 +1,10 @@
 ---
 layout: page
-title: project 4
-description: another without an image
-img:
-importance: 3
-category: fun
+title: concept-mod
+description: concept ablating and altering algorithms in neural networks
+img: assets/img/concepts.png
+importance: 6
+category: spring 2023
 ---
 
 Every project has a beautiful feature showcase page.
