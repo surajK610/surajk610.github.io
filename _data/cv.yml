@@ -41,23 +41,24 @@
 - title: Research
   type: time_table
   contents:
-    - title: Transformer Learning Dynamics
-      year: Fall 2023
+    - title: LUNAR Lab
+      year: 2023
       description:
+        <ol>
+          <li>Transformer Learning Dynamics &#10</li>
+          <li>Reinforcement Learning from AI Feedback &#10</li>
+          <li>Concept Interventions in NNs</li>
+        </ol>
 
-    - title: RLAIF for Pink Elephants
-      year: Fall 2023
-      description:
-    
-    - title: Concept Removal/Counterfactual Algorithms
-      year: Spring 2023
-      description:
 
-- title: Honors and Awards
+- title: Achievements
   type: list
   contents:
-    - <u>Achievements:</u> Intel International Science Fair Finalist, 
-          AIME Qualifier (x2), LA Country Science Fair Overall Winner
+        <ol>
+          <li>Intel International Science Fair Finalist &#10</li>
+          <li>AIME Qualifier (x2) &#10</li>
+          <li>LA Country Science Fair Overall Winner</li>
+        </ol>
 
 - title: Other Interests
   type: list
