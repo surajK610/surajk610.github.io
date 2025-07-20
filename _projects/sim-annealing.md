@@ -1,6 +1,6 @@
 ---
 layout: page
-title: annealing
+title: simulated-annealing
 description: exploring parallelization models for simulated annealing 
 img: /assets/img/sim-annealing.gif
 importance: 4

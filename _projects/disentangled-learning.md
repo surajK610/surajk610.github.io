@@ -6,7 +6,7 @@ img: /assets/img/disentangled.png
 importance: 5
 category: spring 2023
 ---
-# Disentangling Causal Mechanisms by Obstructing Classifiers: A Novel Approach to Interpretable AI
+# Disentangling Causal Mechanisms
 
 *How we built disentangled representations by explicitly partitioning latent spaces and obstructing unwanted correlations*
 
@@ -150,8 +150,6 @@ The most compelling evidence comes from visualizing the learned latent spaces:
 - **Color Partition**: Clear color clusters, digits highly entangled
 
 This visual separation confirms that our method successfully isolates independent causal mechanisms.
-
-## Technical Deep Dive: Why This Works
 
 ### The Mathematics of Adversarial Projection
 
@@ -405,7 +403,7 @@ The marriage of causal structure knowledge with end-to-end neural optimization o
 
 ---
 
-*This research was conducted at Brown University's Department of Computer Science. The complete codebase, experimental data, and additional visualizations are available in our [GitHub repository](https://github.com/surajK610/disentangled-learning-by-projection).*
+*This research was conducted at Brown University's Department of Computer Science with collaborator Neil Xu. The complete codebase, experimental data, and additional visualizations are available in our [GitHub repository](https://github.com/surajK610/disentangled-learning-by-projection).*
 
 ## Technical Appendix
 

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: ppoed-lms-hackable
+title: hacking-gpt
 description: using mechinterp to hack a PPO-ed GPT-2
 img: assets/img/ppoed_models/ppo_actor_crit.png
 importance: 6
