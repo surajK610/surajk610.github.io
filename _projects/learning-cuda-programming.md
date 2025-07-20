@@ -16,7 +16,7 @@ This blog post describes my journey through Parallel Computing on Heterogeneous 
 
 
 
-## Task 1: CPU Matrix-Vector Multiplication Optimizations
+## Task 1: CPU Matrix-Vector Multiplication
 
 ### The Foundation: Understanding Memory Hierarchy and Roofline Models
 
@@ -27,15 +27,15 @@ We began with the simple task of matrix-vector multiplication. Much of the story
 
 Before diving into optimizations, let's go over the roofline model, a crucial framework for understanding performance limitations. The roofline model essentially has two zones: a memory bound zone and a compute bound zone. You would like to be in the compute bound zone in order to maximally utilize your given hardware budget.
 
-<div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/gpu_roofline_model.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/gpu_roofline_model.png" title="example image" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
     Here's the naive GPU roofline model for a RTX 6000. In practice, the *blockDim* causes waves and there are weird interaction effects with things such as memory coalescing.
 </div>
-
 
 
 For matrix-vector multiplication:
@@ -128,11 +128,10 @@ double* performMatrixVectorMultiplicationUnrolled4(double** matrix, double* vect
 
 **Trade-off Discovery**: Manual unrolling improved performance but made code less readable. More importantly, high compiler optimization levels often achieved better results than manual unrolling.
 
-## Task 2: Matrix-Matrix Multiplication and OpenMP
+## Task 2: Matrix-Matrix Multiplication
 
-### Scaling to Larger Problems and Roofline Analysis
 
-Matrix-matrix multiplication is the core of most deep learning and scientific computing these days. Unfortunately matrix multiplication with `$MxN$` and `$NxP$` matrices is `$2MNP$` flops (N multiplications and N-1 additions per entry in the final matrix). With this `$O(n^3)$` complexity, we need more sophisticated optimization strategies. The roofline analysis revealed:
+Matrix-matrix multiplication is the core of most deep learning and scientific computing these days. Unfortunately matrix multiplication with `MN` and `NP` matrices is `2MNP` flops (N multiplications and N-1 additions per entry in the final matrix). With this `O(n^3)` complexity, we need more sophisticated optimization strategies. The roofline analysis revealed:
 
 - **FLOPS**: 2NKM operations
 - **Memory Access**: 3NKM loads/stores × 8 bytes = 24NKM bytes  
@@ -140,7 +139,7 @@ Matrix-matrix multiplication is the core of most deep learning and scientific co
 
 Still memory-bound, but slightly better than matrix-vector multiplication.
 
-#### The Critical Discovery: Loop Ordering Matters
+#### Loop Ordering Matters
 
 One of the most surprising discoveries was how much loop order affects performance. I tested four different orderings:
 
@@ -167,10 +166,12 @@ for (int i = 0; i < N; ++i) {
 **Performance Comparison**:
 | Loop Order | Average FLOP Rate | Performance Gain |
 |------------|------------------|------------------|
-| i-j-k (NMK) | 0.487667 TFLOPS  | Baseline         |
-| m-n-k (MNK) | 0.482222 TFLOPS  | -1.1%           |
-| i-k-j (NKM) | 0.524519 TFLOPS  | +7.5%           |
-| k-n-m (KNM) | 0.524741 TFLOPS  | +7.6%           |
+| i-j-k  NMK | 0.487667 TFLOPS  | Baseline         |
+| m-n-k  MNK | 0.482222 TFLOPS  | -1.1%           |
+| i-k-j  NKM | 0.524519 TFLOPS  | +7.5%           |
+| k-n-m  KNM | 0.524741 TFLOPS  | +7.6%           |
+
+
 
 **Key Insight**: The i-k-j and k-n-m orders performed best because they access matrix B row-wise instead of column-wise, dramatically improving cache locality. This single change improved performance by ~7.5% without any algorithmic modifications.
 
@@ -228,13 +229,11 @@ double** loopBlockingMatrixMatrixMultiplication(double** C, double** A, double**
 
 ## Task 3: GPU Programming with CUDA
 
-### The Paradigm Shift to Massively Parallel Computing
-
-Moving from CPU to GPU programming represented a fundamental shift in thinking. Instead of optimizing for a few powerful cores, I had to think about thousands of lightweight threads working in parallel on an **RTX 6000 GPU**.
+Moving from CPU to GPU programming represents a fundamental shift in thinking. Instead of optimizing for a few powerful cores, one must think about thousands of lightweight threads working in parallel on an **RTX 6000 GPU**. Boundary conditions are critical and everything must be thought of in terms of collective operations (e.g. `all_reduce`). We do this with special cuda primities such as `__shfl_down_sync`.
 
 #### Understanding the GPU Memory Hierarchy and Roofline Model
 
-The GPU introduces a much more complex memory hierarchy and computational model:
+The GPU introduces a much more complex memory hierarchy and computational model. See figure 1 for this in a basic roofline representation.
 
 **GPU Roofline Analysis**:
 - **Peak Performance**: 133632 GF/s (Tensor), 16691 GF/s (Single-Precision)
@@ -390,7 +389,7 @@ The performance gains were heavily dependent on matrix dimensions:
 
 For matrices with many columns but few rows (e.g., 10×10000), the multiple warps strategy achieved **0.018181 TFLOPS** - a **171x improvement** over the baseline 0.000106 TFLOPS. This scenario is ideal for GPU parallelization because each row has enough work to keep many threads busy.
 
-## Task 4: CUDA Streams and Advanced Memory Management
+## Task 4: CUDA Streams
 
 ### Beyond Single-Stream Execution
 
