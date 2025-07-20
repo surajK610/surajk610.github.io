@@ -7,11 +7,12 @@ importance: 6
 category: spring 2023
 ---
 
-# My Journey Through Parallel Computing: From CPU Optimizations to GPU Kernels
+# From CPU Optimizations to GPU Kernels
+--
 
 ## Introduction
 
-This blog post chronicles my learning journey through Parallel Computing on Heterogeneous (CPU + GPU) Systems at Brown University. Over the course, we progressed from basic CPU optimizations to advanced GPU programming, exploring the fundamental concepts that make modern high-performance computing possible. What started as simple matrix operations evolved into a deep understanding of hardware-software co-design, memory hierarchies, and parallel algorithm optimization. 
+This blog post describes my journey through Parallel Computing on Heterogeneous (CPU + GPU) Systems at Brown University. We progress from basic CPU optimizations to advanced GPU programming, exploring the fundamental concepts that make modern high-performance computing possible. What started as simple matrix operations evolved into a deep understanding of hardware-software co-design, memory hierarchies, and parallel algorithm optimization. 
 
 
 
@@ -19,13 +20,25 @@ This blog post chronicles my learning journey through Parallel Computing on Hete
 
 ### The Foundation: Understanding Memory Hierarchy and Roofline Models
 
-We began with the seemingly simple task of matrix-vector multiplication, but this assignment taught me that performance is rarely about the algorithm alone—it's about how well you work with the hardware.
-
-**Key Learning**: Memory access patterns and theoretical performance bounds can make or break performance.
+We began with the simple task of matrix-vector multiplication. Much of the story behind this class is about maximizing performance for the given hardware. Memory access patterns and theoretical performance bounds can make or break performance.
 
 #### Roofline Model Analysis
 
-Before diving into optimizations, I learned to analyze my algorithm using the roofline model—a crucial framework for understanding performance limitations. For matrix-vector multiplication:
+
+Before diving into optimizations, let's go over the roofline model, a crucial framework for understanding performance limitations. The roofline model essentially has two zones: a memory bound zone and a compute bound zone. You would like to be in the compute bound zone in order to maximally utilize your given hardware budget.
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/gpu_roofline_model.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Here's the naive GPU roofline model for a RTX 6000. In practice, the *blockDim* causes waves and there are weird interaction effects with things such as memory coalescing.
+</div>
+
+
+
+For matrix-vector multiplication:
 
 - **FLOPS**: 2MN operations (one multiply, one add per element)
 - **Memory Access**: 3 loads + 1 store per operation = 32MN bytes (assuming 8-byte doubles)
@@ -119,7 +132,7 @@ double* performMatrixVectorMultiplicationUnrolled4(double** matrix, double* vect
 
 ### Scaling to Larger Problems and Roofline Analysis
 
-Matrix-matrix multiplication is the core of most deep learning and scientific computing these days. Unfortunately matrix multiplication with $MxN$ and $NxP$ matrices is $2MNP$ flops (N multiplications and N-1 additions per entry in the final matrix). With this $O(n^3)$ complexity, we need more sophisticated optimization strategies. The roofline analysis revealed:
+Matrix-matrix multiplication is the core of most deep learning and scientific computing these days. Unfortunately matrix multiplication with `$MxN$` and `$NxP$` matrices is `$2MNP$` flops (N multiplications and N-1 additions per entry in the final matrix). With this `$O(n^3)$` complexity, we need more sophisticated optimization strategies. The roofline analysis revealed:
 
 - **FLOPS**: 2NKM operations
 - **Memory Access**: 3NKM loads/stores × 8 bytes = 24NKM bytes  
@@ -153,7 +166,7 @@ for (int i = 0; i < N; ++i) {
 
 **Performance Comparison**:
 | Loop Order | Average FLOP Rate | Performance Gain |
-|------------|-------------------|------------------|
+|------------|------------------|------------------|
 | i-j-k (NMK) | 0.487667 TFLOPS  | Baseline         |
 | m-n-k (MNK) | 0.482222 TFLOPS  | -1.1%           |
 | i-k-j (NKM) | 0.524519 TFLOPS  | +7.5%           |
@@ -377,15 +390,15 @@ The performance gains were heavily dependent on matrix dimensions:
 
 For matrices with many columns but few rows (e.g., 10×10000), the multiple warps strategy achieved **0.018181 TFLOPS** - a **171x improvement** over the baseline 0.000106 TFLOPS. This scenario is ideal for GPU parallelization because each row has enough work to keep many threads busy.
 
-## Assignment 4: CUDA Streams and Advanced Memory Management
+## Task 4: CUDA Streams and Advanced Memory Management
 
 ### Beyond Single-Stream Execution
 
-The final assignment introduced sophisticated execution strategies needed for production GPU code, focusing on **concurrent execution** and **memory transfer optimization**.
+The final task introduced sophisticated execution strategies needed for production GPU code, focusing on **concurrent execution** and **memory transfer optimization**.
 
 #### Baseline: Single Stream Performance
 
-Using the optimized multiple-warps kernel from Assignment 3 as a baseline:
+Using the optimized multiple-warps kernel from task 3 as a baseline:
 
 | Matrix Size | Time (μs) | FLOP Rate |
 |-------------|-----------|-----------|
@@ -466,7 +479,22 @@ void matVecMul(double* mat_h, double* vec_h, double* result_h, int M, int numRow
 
 #### Memory Transfer Bottleneck Discovery
 
+
 Through profiling analysis, I discovered that **memory allocation and transfer operations took significantly longer than the actual computation**. The total matrix-vector multiplication averaged only **11.00800 μs**, while memory operations dominated the execution time.
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/concurrent_smaller.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm-4 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/create_streams.png" title="cuda stream" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Top shows Nvidia Nsight Systems view of the concurrent computation and bottom shows stream creation.
+</div>
+
+
 
 **Profiler Insights**: 
 - Kernel execution and result vector copying happened **concurrently** across multiple streams
@@ -480,20 +508,14 @@ All host memory was allocated using `cudaHostAlloc` for page-locked (pinned) mem
 - **Concurrent execution**: Allows overlap of memory transfers with kernel execution
 - **Predictable performance**: Eliminates page faults during transfers
 
-## Reflecting on the Learning Journey
+I was fairly surprised with how quickly the effect of stream concurrency leveled out. Additionally, it was interesting
+how much longer memory allocation/copying took than the matrix vector calculation. I think the best way to optimize
+the program going forward would be to optimize the memory allocation/freeing/copying, as that seems to create the
+heaviest burden computationally
 
-### Quantitative Performance Evolution
+--
 
-The progression through these assignments shows dramatic performance improvements:
-
-| Assignment | Best Performance | Speedup vs. Assignment 1 |
-|------------|------------------|---------------------------|
-| 1 (CPU)    | 1.807 GFLOPS     | 1.0x (baseline)          |
-| 2 (CPU+OpenMP) | ~1.001 TFLOPS | ~554x                     |
-| 3 (GPU)    | 54.854 GFLOPS    | ~30x                      |
-| 4 (GPU+Streams) | ~1.207 GFLOPS | ~668x                     |
-
-### Fundamental Concepts Mastered
+### Summary
 
 #### 1. Performance Analysis Frameworks
 - **Roofline Model**: Understanding the theoretical performance bounds imposed by arithmetic intensity
@@ -516,36 +538,9 @@ The progression through these assignments shows dramatic performance improvement
 - **Hierarchical Reduction**: Combining warp-level and block-level reduction strategies
 - **Stream Programming**: Overlapping computation with communication for better resource utilization
 
-### Key Lessons Learned
+### Tools and Techniques
 
-#### 1. Measurement-Driven Optimization
-Performance intuition can be wrong. Throughout this journey, I learned that:
-- Contiguous memory allocation sometimes hurt performance
-- Loop blocking didn't always improve cache behavior
-- Stream overhead could outweigh parallelism benefits for small problems
-
-**Lesson**: Always profile and measure before optimizing.
-
-#### 2. The Importance of Problem Characteristics
-Different optimizations work better for different problem shapes:
-- **CPU optimizations** excel for moderate-sized, compute-intensive problems
-- **GPU parallelization** shines for large problems with high parallelism
-- **Memory-bound algorithms** require different strategies than compute-bound ones
-
-#### 3. Hardware Architecture Determines Algorithm Design
-Understanding the target hardware is crucial:
-- **CPU**: Few powerful cores, large caches, complex instruction sets
-- **GPU**: Many simple cores, hierarchical memory, SIMT execution model
-- **Memory systems**: Bandwidth vs. latency trade-offs, locality principles
-
-#### 4. Optimization is About Trade-offs
-Every optimization technique has costs:
-- **Loop unrolling**: Improves ILP but increases code size and complexity
-- **Blocking**: Improves cache behavior but adds algorithmic overhead  
-- **GPU parallelism**: Provides massive speedups but requires careful memory management
-- **Multiple streams**: Enable concurrency but add synchronization complexity
-
-### Tools and Techniques Mastered
+Here are some of the tools and the techniques that I used for these experiments.
 
 #### Development and Profiling Tools
 - **CUDA Toolkit**: GPU programming, debugging, and optimization
@@ -561,30 +556,9 @@ Every optimization technique has costs:
 - **Stream Programming**: Concurrent execution and resource scheduling
 - **Cache-blocking**: Optimizing for memory hierarchy behavior
 
-## Future Directions and Applications
-
-This comprehensive journey through parallel computing has opened numerous avenues for advanced exploration:
-
-### Advanced GPU Techniques
-- **Tensor Core Programming**: Leveraging specialized AI acceleration hardware
-- **Multi-GPU Programming**: Scaling beyond single-device limitations using NCCL and MPI
-- **Dynamic Parallelism**: GPU kernels launching other kernels for adaptive algorithms
-- **Unified Memory**: Simplifying memory management across CPU-GPU boundaries
-
-### Emerging Parallel Computing Paradigms
-- **Heterogeneous Computing**: Combining CPUs, GPUs, and specialized accelerators
-- **Graph Neural Networks**: Applying parallel computing to irregular data structures  
-- **Quantum-Classical Hybrid Computing**: Preparing for the next generation of parallel systems
-
-### Domain-Specific Applications
-- **Scientific Computing**: Weather simulation, molecular dynamics, computational fluid dynamics
-- **Machine Learning**: Training large neural networks, distributed inference systems
-- **Data Analytics**: Real-time processing of massive datasets, parallel database systems
-- **Computer Graphics**: Ray tracing, volumetric rendering, procedural content generation
-
 ## Conclusion
 
-The progression from basic CPU optimizations to advanced GPU programming represents more than just a technical journey—it's a fundamental transformation in computational thinking. Each assignment built systematically upon the previous, creating a comprehensive understanding of modern parallel computing systems.
+The progression from basic CPU optimizations to advanced GPU programming represents more than just a technical journey—it's a fundamental transformation in computational thinking. Each task built systematically upon the previous, creating a comprehensive understanding of modern parallel computing systems.
 
 **Most Valuable Insights**:
 
@@ -598,8 +572,8 @@ The progression from basic CPU optimizations to advanced GPU programming represe
 
 The 668x performance improvement from the initial CPU implementation to the final GPU+streams version demonstrates the transformative power of parallel computing. However, the real value lies not in the speedup numbers, but in developing the analytical skills, debugging methodologies, and architectural understanding needed to tackle future computational challenges.
 
-As computing continues to evolve toward exascale systems, quantum computers, and neuromorphic processors, the fundamental principles learned in this course—understanding hardware, measuring performance, thinking in parallel, and designing for scalability—will remain the essential foundation for pushing the boundaries of what's computationally possible.
+As computing continues to evolve toward exascale systems, quantum computers, and neuromorphic processors, the fundamental principles I believe will stay the same—understanding hardware, measuring performance, thinking in parallel, and designing for scalability—will remain the essential foundation for pushing the boundaries of what's computationally possible.
 
 ---
 
-*This blog post chronicles my learning journey through APMA2822 at Brown University. The complete code implementations, experimental data, and profiling results are available in the [course repository](https://github.com/surajk610/APMA2822). Disclosure: Parts of this blog post were written w/ Claude so please email me at <firstname>k610 at gmail*
+*This blog post describes my learning journey through APMA2822 at Brown University. The complete code implementations, experimental data, and profiling results are available in the [course repository](https://github.com/surajk610/APMA2822). Disclosure: Parts of this blog post were written w/ Claude so please email me at firstnamek610 at gmail*
