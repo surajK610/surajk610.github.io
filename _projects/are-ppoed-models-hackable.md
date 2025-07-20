@@ -285,4 +285,7 @@ PPOConfig(
 
 ### Reproducibility
 
-All experiments were conducted using the `trlx` library for RLHF training and `transformer_lens` for mechanistic interpretability analysis.
+All experiments were conducted using the `trlx` library for RLHF training and `transformer_lens` for mechanistic interpretability analysis. 
+
+### References
+Please see the [preprint](https://surajk610.github.io/assets/pdf/Is_PPO_Hackable.pdf) for the full references.

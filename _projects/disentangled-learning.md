@@ -446,3 +446,6 @@ Where:
 
 **Perfect disentanglement**: DS = 1.0  
 **No disentanglement**: DS = 0.0
+
+### References
+Please see the [writeup](https://surajk610.github.io/assets/pdf/Disentangling_Causal_Mechanisms_By_Obstructing_Classifiers.pdf) for the full references.

@@ -60,7 +60,6 @@ We used a carefully designed dataset from "Unit Testing for Concepts in Neural N
 
 ## Method 1: INLP - The Linear Projection Approach
 
-### How It Works
 
 INLP removes concepts by finding the linear subspace that best encodes the target concept, then projecting it away:
 
@@ -92,8 +91,14 @@ def inlp_ablation(representations, concept_labels):
     Dataset examples showing the three concept dimensions
 </div>
 
-*[Figure 2: INLP results from your heatmap showing probe accuracies]*
-
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/concept_ablation/all_heatmap.png" title="all heatmap" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Left: INLP, Middle: RLACE, Right: WTMT. Accuracy Heatmap of each probe concept and the composed downstream class after intervention sorted by the original class. This heatmap indicates that WTMT affects the original class prediction and intervened concept the most. As expected, concepts that were not intervened on maintain high accuracy (indicating potential modularity of concept representations)
+</div>
 **What we found**:
 - **Probe accuracy dropped** for targeted concepts (good sign)
 - **Downstream classification remained high** (concerning sign)
@@ -105,7 +110,6 @@ def inlp_ablation(representations, concept_labels):
 
 ## Method 2: RLACE - The Adversarial Game Changer
 
-### How It Works
 
 RLACE frames concept removal as a **minimax game** between a concept classifier and a projection matrix:
 
@@ -132,11 +136,11 @@ def rlace_ablation(X, y, num_ranks=5, iterations=10000):
 
 ### Results: Much More Effective
 
-div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
+<div class="row justify-content-sm-center">
+    <div class="col-sm-6 mt-3 mt-md-0">
         {% include figure.html path="assets/img/concept_ablation/out_iter_effect_ablation_accuracy_no_title.png" title="out_iter_effect_ablation_accuracy_no_title" class="img-fluid rounded z-depth-1" %}
     </div>
-    <div class="col-sm-4 mt-3 mt-md-0">
+    <div class="col-sm-6 mt-3 mt-md-0">
         {% include figure.html path="/assets/img/concept_ablation/rank_effect_ablation_accuracy_no_title.png" title="rank_effect_ablation_accuracy_no_title" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -158,7 +162,6 @@ div class="row justify-content-sm-center">
 
 ## Method 3: WTMT - The Non-Linear Alternative
 
-### How It Works
 
 Unlike INLP and RLACE, which use linear projections, WTMT directly modifies network activations using gradient descent:
 
@@ -185,10 +188,10 @@ def wtmt_intervention(model, input_data, target_concept, new_value):
 ### Results: Powerful but Different
 
 <div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
+    <div class="col-sm-6 mt-3 mt-md-0">
         {% include figure.html path="assets/img/concept_ablation/wtmt_matching_accuracies.png" title="wtmt_matching_accuracies" class="img-fluid rounded z-depth-1" %}
     </div>
-    <div class="col-sm-4 mt-3 mt-md-0">
+    <div class="col-sm-6 mt-3 mt-md-0">
         {% include figure.html path="assets/img/concept_ablation/wtmt_auxillary_accuracies.png" title="wtmt_auxillary_accuracies" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -221,10 +224,7 @@ def wtmt_intervention(model, input_data, target_concept, new_value):
 </div>
 <div class="caption">
 Various Types of Concept Accuracies (Top: WTMT, Middle: RLACE Right: INLP).
-For WTMT, this figure shows the accuracy of the counterfactual class, the accuracy without considering the
-intervened concept, and the accuracy of the original class after intervention (this would be an incorrect class
-as we alter to the counterfactual class). For RLACE & INLP, this figure shows accuracy without considering
-the intervened concept, and the accuracy of the original class after intervention
+For WTMT, this figure shows the accuracy of the counterfactual class, the accuracy without considering the intervened concept, and the accuracy of the original class after intervention (this would be an incorrect class as we alter to the counterfactual class). For RLACE & INLP, this figure shows accuracy without considering the intervened concept, and the accuracy of the original class after intervention
 </div>
 
 

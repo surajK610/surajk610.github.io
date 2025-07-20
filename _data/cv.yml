@@ -17,38 +17,38 @@
       institution: Brown University, Providence, RI
       graduation year: Expected 2024
       
-- title: Experience
-  type: time_table
-  contents:
-    - title: Teaching Assistant, Computational Linguistics (CS1460)
-      institution: Brown University
-      year: Fall 2023
-      description:
+# - title: Experience
+#   type: time_table
+#   contents:
+#     - title: Teaching Assistant, Computational Linguistics (CS1460)
+#       institution: Brown University
+#       year: Fall 2023
+#       description:
 
-    - title: Data Science Intern
-      department: Point72 Market Intelligence, Proprietary Research
-      year: Summer 2023
+#     - title: Data Science Intern
+#       department: Point72 Market Intelligence, Proprietary Research
+#       year: Summer 2023
 
-    - title: Machine Learning (NLP) Intern
-      department: Kaiser Permanente Medical Informatics
-      year: Summer 2022
+#     - title: Machine Learning (NLP) Intern
+#       department: Kaiser Permanente Medical Informatics
+#       year: Summer 2022
 
-    - title: Machine Learning Engineer Intern
-      department: VolKno
-      year: 2022
+#     - title: Machine Learning Engineer Intern
+#       department: VolKno
+#       year: 2022
 
 
-- title: Research
-  type: time_table
-  contents:
-    - title: LUNAR Lab
-      year: 2023
-      description:
-        <ol>
-          <li>Transformer Learning Dynamics &#10</li>
-          <li>Reinforcement Learning from AI Feedback &#10</li>
-          <li>Concept Interventions in NNs</li>
-        </ol>
+# - title: Research
+#   type: time_table
+#   contents:
+#     - title: LUNAR Lab
+#       year: 2023
+#       description:
+#         <ol>
+#           <li>Transformer Learning Dynamics &#10</li>
+#           <li>Reinforcement Learning from AI Feedback &#10</li>
+#           <li>Concept Interventions in NNs</li>
+#         </ol>
 
 
 - title: Achievements
