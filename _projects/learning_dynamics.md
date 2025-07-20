@@ -97,7 +97,7 @@ Different syntactic properties "pushed down" at different rates:
 
 **Key Insight**: Simpler syntactic properties migrated earlier, while complex structural relationships required deeper processing throughout training.
 
-## The Synthetic Experiment: Controlling the Variables
+## A Synthetic Setup
 
 To understand what drives the push-down effect, we designed a controlled synthetic task that captures the essence of part-of-speech disambiguation.
 
@@ -123,11 +123,9 @@ To understand what drives the push-down effect, we designed a controlled synthet
 
 ### Critical Variables Tested
 
-**1. Distribution Type**: Uniform vs. Zipfian (natural language-like)
-**2. Vocabulary Size**: 100 to 20,000 tokens
-**3. Ambiguity Level**: 0% to 50% chance tokens can switch roles
-
-### Breakthrough Results
+1. **Distribution Type**: Uniform vs. Zipfian (natural language-like)
+2. **Vocabulary Size**: 100 to 20,000 tokens
+3. **Ambiguity Level**: 0% to 50% chance tokens can switch roles
 
 
 <div class="row justify-content-sm-center">
@@ -158,10 +156,10 @@ To understand what drives the push-down effect, we designed a controlled synthet
 
 
 <div class="row justify-content-sm-center">
-    <div class="col-sm-6 mt-3 mt-md-0">
+    <div class="col-sm-8 mt-3 mt-md-0">
         {% include figure.html path="assets/img/learning_dynamics/zipf_amb=0.00_vs=20000_a=1.5.png" title="syntactic_zipfian" class="img-fluid rounded z-depth-1" %}
     </div>
-    <div class="col-sm-6 mt-3 mt-md-0">
+    <div class="col-sm-8 mt-3 mt-md-0">
         {% include figure.html path="/assets/img/learning_dynamics/zipf_amb=0.10_vs=20000_a=1.5.png" title="syntactic_uniform" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -181,7 +179,7 @@ To understand what drives the push-down effect, we designed a controlled synthet
 - **Surprising finding**: Even with algorithmic strategy, POS information still stored in embeddings
 
 
-### 1. Natural Language Statistics Drive Algorithmic Development
+### Natural Language Statistics Drive Algorithmic Development
 
 **The Zipfian Effect**: Natural language's long-tailed distribution (many rare words) forces models to develop in-context strategies because memorization alone cannot handle the full vocabulary.
 
@@ -190,7 +188,7 @@ To understand what drives the push-down effect, we designed a controlled synthet
 2. **Middle**: Develop algorithmic strategy for rare words  
 3. **Late**: "Distill" algorithmic knowledge into early layers for efficiency
 
-### 2. Memorization and Contextualization Coexist
+### Memorization and Contextualization Coexist
 
 **False Dichotomy**: The field often frames memorization vs. generalization as competing forces, but our results show they're **complementary strategies**:
 
@@ -198,7 +196,7 @@ To understand what drives the push-down effect, we designed a controlled synthet
 - **Contextualization**: Handles rare and ambiguous cases accurately
 - **Integration**: Models use both strategies simultaneously
 
-### 3. Architecture Efficiency Through Knowledge Distillation
+### Architecture Efficiency Through Knowledge Distillation
 
 **The Push-Down Mechanism**: Later layers develop algorithmic strategies, then "teach" earlier layers to encode this knowledge more efficiently.
 
@@ -206,25 +204,6 @@ To understand what drives the push-down effect, we designed a controlled synthet
 - **Deep processing**: Available when needed for complex cases
 - **Shallow access**: Quick lookup for common cases
 - **Best of both worlds**: Flexibility with efficiency
-
-### The Universality Question
-
-**Cross-Task Generalization**: The push-down effect appeared across multiple syntactic tasks, suggesting a **general principle** of neural network training rather than task-specific behavior.
-
-**Scaling Implications**: If this pattern holds for larger models and more complex linguistic phenomena, it could inform:
-- **Efficient model architecture** design
-- **Training procedure** optimization
-- **Interpretability methodology** development
-
-### Developmental Probing Framework
-
-**Innovation**: Rather than probing static, fully-trained models, we systematically tracked representational changes across:
-- **12 transformer layers** 
-- **20+ training checkpoints**
-- **8 syntactic tasks**
-- **3 model seeds**
-
-**Reproducible Patterns**: Consistent effects across seeds and tasks provide strong evidence for the generality of our findings.
 
 ### Progress Measures for Strategy Detection
 
@@ -235,29 +214,13 @@ To understand what drives the push-down effect, we designed a controlled synthet
 
 **Causal Understanding**: These measures allowed us to not just observe strategy changes but understand **why** they occurred.
 
+---
 ## Future Research
 
 These are just initial steps. Some interesting questions that would help validate this study are here.
-### Scaling to Modern Models
-
-**Open Questions**:
-- Do GPT-3/4 scale models show similar push-down effects?
-- How do these dynamics change with billions of parameters?
-- Does the effect persist across different model architectures?
-
-### Cross-Linguistic Generalization
-
-**Research Directions**:
-- Do morphologically rich languages show different patterns?
-- How do syntactic development timelines vary across language families?
-- Can we predict optimal training curricula based on linguistic properties?
-
-### Applications to Model Development
-
-**Practical Extensions**:
-- **Early stopping criteria**: Use syntactic development as training completion signal
-- **Architecture search**: Design layers to support beneficial migration patterns
-- **Debugging tools**: Identify when models develop problematic learning strategies
+1. Scaling to Modern Models
+2. Cross-Linguistic Generalization
+3. Applications to Model Development (e.g. Use syntactic development as training completion signal, identify when models develop problematic learning strategies)
 
 ## Conclusion
 
@@ -272,27 +235,12 @@ Our research reveals that language models don't simply "learn syntax"—they dev
 
 **Broader Impact**: Understanding how models develop linguistic knowledge—rather than just what knowledge they possess—opens new avenues for building more efficient, interpretable, and robust language models.
 
-The "push-down effect" isn't just a curiosity about transformer training dynamics. It reveals fundamental principles about how neural networks can efficiently organize knowledge, suggesting that the most effective AI systems may be those that, like our models, learn to balance multiple complementary strategies for understanding their domain.
+The "push-down effect" reveals fundamental principles about how neural networks can efficiently organize knowledge, suggesting that the most effective AI systems may be those that, like our models, learn to balance multiple complementary strategies for understanding their domain.
+
+
+## References
+Please refer to [publication](https://surajk610.github.io/assets/pdf/Dual_Process_Learning_Con.pdf) for references.
 
 ---
 
 *This research provides a developmental perspective on language model interpretability, showing that the journey of learning is as revealing as the destination. The complete experimental framework and findings offer new tools for understanding and improving language model training.*
-
-
-### Experimental Details
-
-**Models**: MultiBERT seeds 0, 1, 2 (BERT-base architecture)
-**Training Checkpoints**: 0 to 2M steps (20 checkpoints)
-**Probing Setup**: Linear classifiers trained on frozen representations
-**Datasets**: English UD Treebank, OntoNotes-5, Penn Treebank-3
-
-**Synthetic Task**:
-- **Architecture**: 6-layer BERT with single attention head per layer
-- **Vocabulary**: 100-20,000 tokens
-- **Distributions**: Uniform and Zipfian (α = 1.0-1.5)
-- **Ambiguity**: 0-50% token role switching probability
-
-**Code Availability**: Experimental framework designed for reproducibility and extension to other linguistic phenomena and model architectures.
-
-## References
-Please refer to [publication](https://surajk610.github.io/assets/pdf/Dual_Process_Learning_Con.pdf) for references.
