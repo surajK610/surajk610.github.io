@@ -2,7 +2,7 @@
 layout: page
 title: pink-elephants
 description: using RLAIF to solve the pink elephants problem
-img: assets/img/pink-elephant.jpg
+img: assets/img/pink-elephant.png
 importance: 2
 category: fall 2023
 related_publications: 

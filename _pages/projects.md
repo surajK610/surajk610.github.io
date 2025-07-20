@@ -1,8 +1,8 @@
 ---
 layout: page
-title: projects
+title: blog
 permalink: /projects/
-description: A growing collection of my projects.
+description: A half-backed collection of blogs describing some of the projects I have worked on.
 nav: true
 nav_order: 3
 display_categories: [spring 2024, fall 2023, spring 2023]

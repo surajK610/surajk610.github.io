@@ -1,7 +1,7 @@
 ---
 layout: page
-title: cuda-programming
-description: learning cuda programming from Brown's APMA 
+title: ppoed-lms-hackable
+description: using mechinterp to hack a PPO-ed GPT-2
 img: assets/img/ppoed_models/ppo_actor_crit.png
 importance: 6
 category: spring 2024
@@ -41,6 +41,8 @@ This setup allowed us to peer inside the model's "mind" and understand exactly h
 
 ## Mechanistic Analysis
 
+We used mechanistic interpreptability techniques to conduct our analysis.
+
 ### Step 1: Identifying "Negative" Weights
 
 Using insights from recent mechanistic interpretability research, we identified which parts of GPT-2 are responsible for generating negative sentiment. Here's how:
@@ -72,6 +74,8 @@ def find_negative_weight_meanings(tokenizer, w_negative, hooked_model, k=5, n_we
 | 6 | 2360 | unus, disastrous, deteriorated |
 | 9 | 3047 | negligible, diminished, fewer |
 | 7 | 2464 | fail, Fail, Wrong |
+
+
 
 ### Step 2: PPO Training Results
 
@@ -117,8 +121,6 @@ for name, param in model.state_dict().items():
 ```
 
 **Result**: Almost all weights maintained cosine similarity ≥ 0.9998 with their original values!
-
-![Weight Similarity Distribution](https://via.placeholder.com/600x400/2196F3/FFFFFF?text=Weight+Cosine+Similarity%3A+%3E99.98%25+unchanged)
 
 ### Finding #2: Negative Weights Remain Intact
 
@@ -253,11 +255,10 @@ As systems become more powerful, understanding these fundamental limitations bec
 
 ---
 
-*The complete codebase and experimental details are available on [GitHub](https://github.com/surajK610/rl-gpt2-sentiment).*
+*The complete codebase and experimental details are available on [GitHub](https://github.com/surajK610/rl-gpt2-sentiment). This work was conducted in collaboaration with David Getzen.*
 
 ## Technical Appendix
 
-### Key Methods Used
 
 **Mechanistic Interpretability:**
 - **Logit Lens**: Project intermediate representations to vocabulary space

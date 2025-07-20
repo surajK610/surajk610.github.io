@@ -8,7 +8,8 @@ category: fall 2023
 ---
 
 # From CPU Optimizations to GPU Kernels
---
+---
+
 
 ## Introduction
 
@@ -18,7 +19,6 @@ This blog post describes my journey through Parallel Computing on Heterogeneous 
 
 ## Task 1: CPU Matrix-Vector Multiplication
 
-### The Foundation: Understanding Memory Hierarchy and Roofline Models
 
 We began with the simple task of matrix-vector multiplication. Much of the story behind this class is about maximizing performance for the given hardware. Memory access patterns and theoretical performance bounds can make or break performance.
 
@@ -31,17 +31,6 @@ Before diving into optimizations, let's go over the roofline model, a crucial fr
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0">
         {% include figure.html path="assets/img/cuda_programming/gpu_roofline_model.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Here's the naive GPU roofline model for a RTX 6000. In practice, the *blockDim* causes waves and there are weird interaction effects with things such as memory coalescing.
-</div>
-
-
-
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/cuda_programming/gpu_roofline_model.png" title="example image" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -402,7 +391,6 @@ For matrices with many columns but few rows (e.g., 10×10000), the multiple warp
 
 ## Task 4: CUDA Streams
 
-### Beyond Single-Stream Execution
 
 The final task introduced sophisticated execution strategies needed for production GPU code, focusing on **concurrent execution** and **memory transfer optimization**.
 
