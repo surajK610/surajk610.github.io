@@ -6,28 +6,28 @@ img: /assets/img/sim-annealing.gif
 importance: 4
 category: fall 2023
 ---
-# Parallel Simulated Annealing in Heterogeneous Environments: A Performance Study
+# Parallelizing Simulated Annealing
 
 *How we accelerated global optimization by 11x using heterogeneous CPU+GPU computing and comparing cooperative vs. independent parallel algorithms*
 
-## The Challenge: Global Optimization in Complex Landscapes
+## Global Optimization in Complex Landscapes
 
 Traditional gradient-based optimization methods get trapped in local optima when dealing with complex, multi-modal landscapes. **Simulated Annealing (SA)** solves this by probabilistically accepting worse solutions, allowing escape from local traps to find global optima.
 
 But how do we make SA faster using modern parallel computing? We compared two fundamentally different approaches:
 
-### Multi-Start Simulated Annealing (MSA): Independent Processes
+### Multi-Start Simulated Annealing (MSA)
 - Multiple SA processes run completely independently
 - No communication until final result selection
 - Highly parallelizable with no synchronization overhead
 
-### Coupled Simulated Annealing (CSA): Cooperative Processes  
+### Coupled Simulated Annealing (CSA)  
 - Multiple SA processes share information during optimization
 - Periodic synchronization and parameter sharing
 - Collective intelligence guides exploration
 
 
-<div class="row">
+<div class="row justify-content-sm-center">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/img/sim_annealing/coupled_sim_annealing.png" title="example image" class="img-fluid rounded z-depth-1" %}
     </div>
@@ -36,14 +36,14 @@ But how do we make SA faster using modern parallel computing? We compared two fu
     Here is the actor-critic model that has been used for PPO. Specifically, we use
 </div>
 
-## Test Case: The Schwefel Function
+## The Schwefel Function
 
 We tested on the notoriously difficult **Schwefel function**:
 
 $$f(x) = 418.9829d - \sum_{i=1}^{d} x_i \sin(\sqrt{|x_i|}), \quad x \in [-500, 500]^d$$
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-sm-8 mt-3 mt-md-0">
         {% include figure.html path="assets/img/sim_annealing/schwefel_function.png" title="example image" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -62,8 +62,6 @@ We systematically tested across four computational paradigms:
 3. **CUDA**: GPU acceleration for function evaluation
 4. **Heterogeneous**: OpenMP + CUDA combined
 
-
-## Results: Dramatic Performance Gains
 
 ### OpenMP Parallelization: Near-Linear Speedup
 
@@ -108,6 +106,8 @@ We systematically tested across four computational paradigms:
 - **73% of GPU time** spent on memory operations (copying, allocation, deallocation)
 - **Only 27%** on actual computation
 - **Key insight**: Memory management, not computation, determines performance
+
+If we remember the roofline model, it is obvious here that we are in the nonoptimal part of the roofline model (i.e. not utilizing hardware effectively)
 
 ## Implementation Highlights
 

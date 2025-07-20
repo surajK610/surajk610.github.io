@@ -268,7 +268,7 @@ The fact that we could ablate individual concepts without completely destroying 
 - **Multiple evaluation metrics** needed: probe accuracy alone is insufficient
 - **Redundant representations** make concept isolation more challenging than expected
 
-## The Broader Challenge: Why This Is Harder Than It Looks
+## Why This Is Difficult
 
 ### The Superposition Problem
 
@@ -305,7 +305,7 @@ While our controlled visual concepts were largely linear and separable, real-wor
 - Each concept and dataset requires careful tuning
 - Training stability varies significantly across methods
 
-## Conclusion: The Promise and Limitations of Concept Surgery
+## The Promise and Limitations of Concept Surgery
 
 Our systematic comparison reveals both the **promise and limitations** of current concept ablation methods. While we can successfully remove or alter concepts in controlled settings, several challenges remain:
 

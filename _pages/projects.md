@@ -2,10 +2,10 @@
 layout: page
 title: blog
 permalink: /projects/
-description: A half-backed collection of blogs describing some of the projects I have worked on.
+description: A half-backed collection of technical blog posts describing some of the directions I have explored.
 nav: true
 nav_order: 3
-display_categories: [spring 2024, fall 2023, spring 2023]
+display_categories: [spring 2025, spring 2024, fall 2023, spring 2023]
 horizontal: false
 ---
 
