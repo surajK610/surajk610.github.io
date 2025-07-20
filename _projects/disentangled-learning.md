@@ -53,7 +53,16 @@ To demonstrate our approach, we designed a controlled experiment using **Colored
 - **Goal**: Partition latent space to encode digit and color independently
 - **Challenge**: Prevent the model from learning digit-color correlations
 
-*[Figure 1: Examples from the Colored MNIST dataset showing digits 0-9 in red, green, and blue colors - use Figure 1 from your paper]*
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/disentangled/colored_mnist.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Examples from the Colored MNIST dataset showing digits 0-9 in red, green, and blue colors
+</div>
+
 
 ### Architecture: The Disentangled Autoencoder
 
@@ -71,7 +80,16 @@ class RLACE_AE:
 
 Our architecture implements a **partitioned latent space** approach:
 
-*[Figure 2: Architecture diagram showing the disentangled autoencoder with R-LACE - use Figure 3 from your paper]*
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/disentangled/model_arch.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Architecture diagram showing the disentangled autoencoder with R-LACE
+</div>
+
 
 1. **Encoder**: Maps images to d-dimensional latent vectors
 2. **Partition**: Split latent space into two d/2-dimensional subspaces
@@ -106,7 +124,15 @@ def solve_adv_game(self, dataloader, o_epochs=100, a_epochs=10):
 
 **Key innovation**: The alternating optimization between autoencoder training and projection matrix updates creates an **information bottleneck** that forces independent mechanisms into separate latent dimensions.
 
-*[Figure 3: Illustration of R-LACE projection concept - use Figure 2 from your paper showing how orthogonal projection removes information]*
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/disentangled/obstruction_vis.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Illustration of R-LACE projection concept
+</div>
 
 ## Results: Achieving True Disentanglement
 
@@ -139,7 +165,20 @@ To verify true disentanglement, we trained classifiers on each projected latent 
 
 The most compelling evidence comes from visualizing the learned latent spaces:
 
-*[Figure 4: Latent space visualizations showing disentanglement - use Figure 4 from your paper with three panels: (a) vanilla autoencoder, (b) digit encoding dimensions, (c) color encoding dimensions]*
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/disentangled/vanilla_latent.jpeg" title="vanilla_latent" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/disentangled/disentangled_digits.jpeg" title="disentangled_digits" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/disentangled/disentangled_color.jpeg" title="disentangled_color" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+   Latent space visualizations showing disentanglement: (a) vanilla autoencoder, (b) digit encoding dimensions, (c) color encoding dimensions
+</div>
 
 **Before Disentanglement (Vanilla Autoencoder)**:
 - Digit and color information completely entangled
@@ -161,7 +200,6 @@ P ∈ Pₖ ⟺ P = I_D - W^T W,  W ∈ R^(K×D), WW^T = Iₖ
 
 Where **P** projects onto the orthogonal complement of a k-dimensional bias subspace. The projection **neutralizes** unwanted correlations while preserving other information.
 
-*[Figure 5: Mathematical illustration of projection-based concept removal - could create a simple diagram showing how P removes specific directions from the vector space]*
 
 ### Information Bottleneck Interpretation
 
@@ -241,26 +279,10 @@ Consider these realistic scenarios where our method would struggle:
 
 #### Scenario 1: Medical Imaging
 ```python
-# What we assume:
-factors = ["disease_state", "patient_age", "scan_quality", "anatomy_variation"]
-partitions = {
-    "disease_state": dimensions[0:20],
-    "patient_age": dimensions[20:25],
-    "scan_quality": dimensions[25:30],
-    "anatomy_variation": dimensions[30:50]
-}
 
-# Reality:
-# - Disease state interacts with age (different presentations)
-# - Scan quality affects disease visibility (confounding)
-# - Anatomy variation correlates with demographics
-# - We don't know how many dimensions each needs
-# - There are unknown confounding factors
-```
 
-#### Scenario 2: Natural Language
+#### Scenario 1: Natural Language
 ```python
-# What we might try:
 factors = ["syntax", "semantics", "style"]
 
 # Reality:
@@ -271,9 +293,8 @@ factors = ["syntax", "semantics", "style"]
 # - We can't cleanly separate these concepts
 ```
 
-#### Scenario 3: Real-World Images
+#### Scenario 2: Real-World Images
 ```python
-# Attempted factorization:
 factors = ["object_identity", "pose", "lighting", "background"]
 
 # Why this fails:
@@ -295,44 +316,29 @@ Our approach reveals a **fundamental tension** in disentangled representation le
 
 This suggests that the goal of "perfect disentanglement" may be fundamentally at odds with how neural networks naturally want to represent information.
 
-### Implications for Future Work
+## Implementation and Reproducibility
 
-These limitations point toward several important research directions:
+Our complete implementation is available on [GitHub](https://github.com/surajK610/disentangled-learning-by-projection), including:
 
-1. **Soft disentanglement**: Instead of hard partitioning, develop methods that encourage factor separation while allowing controlled interaction
+- **Dataset generation**: Colored MNIST creation scripts
+- **Model architecture**: Complete autoencoder with R-LACE integration
+- **Training pipeline**: Alternating optimization implementation
+- **Evaluation metrics**: Disentanglement quality assessment
+- **Visualization tools**: Latent space plotting and reconstruction galleries
 
-2. **Adaptive dimensionality**: Develop techniques to automatically discover the intrinsic dimensionality of generative factors
+## Conclusion
 
-3. **Factor discovery**: Integrate causal discovery methods to automatically identify relevant factors from data
+Our work introduces a fundamentally new approach to disentangled representation learning that moves beyond implicit regularization to **explicit structural constraints**. By leveraging adversarial projection to obstruct unwanted correlations, we achieve:
 
-4. **Hierarchical approaches**: Handle factors that operate at different levels of abstraction
+**True disentanglement**: Independent factors in separate latent dimensions  
+**Explicit mapping**: Known correspondence between dimensions and concepts  
+**Principled foundation**: Based on solid theoretical understanding  
+**Practical effectiveness**: Demonstrated on concrete experimental tasks  
 
-5. **Robustness to violation**: Develop methods that degrade gracefully when independence assumptions are violated
+**Key insight**: Sometimes the best way to learn independent representations is to actively fight against entanglement, rather than hoping regularization will encourage it. However, this approach may be fundamentally limited by the reality that natural data often exhibits meaningful entanglement and superposition.
 
-### Promising Extensions
 
-**Causal Discovery Integration**: Combine with causal discovery methods to automatically identify independent mechanisms:
-
-```python
-# Hypothetical extension
-causal_factors = discover_causal_structure(dataset)
-partitions = create_latent_partitions(causal_factors)
-model = RLACE_AE(partitions=partitions)
-```
-
-**Hierarchical Disentanglement**: Extend to hierarchical factor structures:
-- **Level 1**: Object vs. background
-- **Level 2**: Object shape vs. object texture
-- **Level 3**: Fine-grained attributes
-
-**Real-World Applications**:
-- **Medical imaging**: Separate anatomy from pathology
-- **Autonomous vehicles**: Disentangle weather, lighting, and scene content
-- **Natural language**: Separate syntax, semantics, and style
-
-## Broader Implications: Towards Interpretable AI
-
-Our work represents a step toward more **interpretable and trustworthy AI systems**. By explicitly partitioning causal mechanisms, we enable:
+Still, we believe our work represents a step toward more **interpretable and trustworthy AI systems**. By explicitly partitioning causal mechanisms, we enable:
 
 ### Compositional Generation
 ```python
@@ -351,47 +357,6 @@ new_image = decode(concat(digit_encoding, color_encoding))
 - Modify specific attributes without affecting others
 - Enable precise control over generated content
 - Support counterfactual reasoning
-
-## Implementation and Reproducibility
-
-Our complete implementation is available on [GitHub](https://github.com/surajK610/disentangled-learning-by-projection), including:
-
-- **Dataset generation**: Colored MNIST creation scripts
-- **Model architecture**: Complete autoencoder with R-LACE integration
-- **Training pipeline**: Alternating optimization implementation
-- **Evaluation metrics**: Disentanglement quality assessment
-- **Visualization tools**: Latent space plotting and reconstruction galleries
-
-### Quick Start
-
-```bash
-# Setup environment
-python3 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-
-# Generate colored MNIST dataset
-python dataset/dataset_utils.py
-
-# Run baseline experiments
-python baseline_experiments.py --baseline-autoencoder
-
-# Train disentangled model
-python disentangled_learning_experiments.py --d 6 --epochs 10
-```
-
-## Conclusion: A New Paradigm for Disentanglement
-
-Our work introduces a fundamentally new approach to disentangled representation learning that moves beyond implicit regularization to **explicit structural constraints**. By leveraging adversarial projection to obstruct unwanted correlations, we achieve:
-
-**True disentanglement**: Independent factors in separate latent dimensions  
-**Explicit mapping**: Known correspondence between dimensions and concepts  
-**Principled foundation**: Based on solid theoretical understanding  
-**Practical effectiveness**: Demonstrated on concrete experimental tasks  
-
-**Key insight**: Sometimes the best way to learn independent representations is to actively fight against entanglement, rather than hoping regularization will encourage it. However, this approach may be fundamentally limited by the reality that natural data often exhibits meaningful entanglement and superposition.
-
-This work earned recognition as a **top 10% project** in Brown University's Algorithmic Aspects of Machine Learning course, demonstrating the theoretical contributions while highlighting the substantial challenges that remain for practical deployment.
 
 ### Looking Forward
 

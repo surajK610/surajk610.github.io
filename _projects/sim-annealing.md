@@ -33,7 +33,7 @@ But how do we make SA faster using modern parallel computing? We compared two fu
     </div>
 </div>
 <div class="caption">
-    Here is the actor-critic model that has been used for PPO. Specifically, we use
+    Parallelization Models Used in Coupled Simulated Annealing (CSA) Algorithm (MSA Model is similar but uses OpenMP for Individual Temperature Scheduling)
 </div>
 
 ## The Schwefel Function
