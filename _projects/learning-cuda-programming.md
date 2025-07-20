@@ -1,10 +1,10 @@
 ---
 layout: page
 title: cuda-programming
-description: learning cuda programming from Brown's APMA 
-img: assets/img/concepts.png
+description: from cpu optimizations to gpu kernels
+img: assets/img/cuda_programming/gpu_roofline_model.png
 importance: 6
-category: spring 2023
+category: fall 2023
 ---
 
 # From CPU Optimizations to GPU Kernels
@@ -30,7 +30,7 @@ Before diving into optimizations, let's go over the roofline model, a crucial fr
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/gpu_roofline_model.png" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/cuda_programming/gpu_roofline_model.png" title="example image" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -483,10 +483,10 @@ Through profiling analysis, I discovered that **memory allocation and transfer o
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/concurrent_smaller.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/cuda_programming/concurrent_smaller.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm-4 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/create_streams.png" title="cuda stream" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/cuda_programming/create_streams.png" title="cuda stream" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
