@@ -1,6 +1,6 @@
 ---
 layout: page
-title: cuda-programming
+title: cpu-gpu-programming
 description: from cpu optimizations to gpu kernels
 img: assets/img/cuda_programming/gpu_roofline_model.png
 importance: 6

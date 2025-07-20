@@ -1,7 +1,7 @@
 ---
 layout: page
-title: dynamics
-description: learning dynamics in MLMs
+title: learning-dynamics
+description: syntax learning dynamics in MLMs
 img: assets/img/learning-dynamics.png
 importance: 2
 category: spring 2025
