@@ -1,16 +1,25 @@
+---
+layout: page
+title: cuda-programming
+description: learning cuda programming from Brown's APMA 
+img: assets/img/ppoed_models/ppo_actor_crit.png
+importance: 6
+category: spring 2024
+---
+
 # Are PPO-ed Language Models Hackable?
 
 *Exploring how reinforcement learning "aligns" language models and whether this alignment can be circumvented through mechanistic understanding. This research was written in spring of 2024 (back when RLHF was still somewhat popular).*
 
-## Introduction: The Alignment Challenge
+## The Alignment Challenge
 
 Large language models come with a fundamental problem: they often exhibit undesirable behaviors like toxicity, bias, and negative sentiment. This has led to the widespread adoption of **Reinforcement Learning from Human Feedback (RLHF)** and specifically **Proximal Policy Optimization (PPO)** to "align" these models with human preferences.
 
 The critical question we are interested in: *Are these alignment techniques actually removing harmful capabilities, or are they simply learning to hide them?*
 
-Our research tackles this question head-on by examining GPT-2 through the lens of **mechanistic interpretability** before and after PPO training. What we discovered has important implications for AI safety and the robustness of current alignment methods.
+Our research tackles this question head-on by examining GPT-2 through the lens of **mechanistic interpretability** before and after PPO training. What we discovered has important implications for AI safety and the robustness of current alignment methods. Recent research by [Lee et al. (2024)](https://arxiv.org/abs/2401.01967) discovered that models aligned with Direct Preference Optimization (DPO) to avoid toxicity don't actually remove toxic knowledge—they just learn an "offset" to avoid expressing it. We extend this finding to examine whether PPO exhibits similar behavior with sentiment generation.
 
-## The Experiment: A Controlled Study of Sentiment Alignment
+## A Controlled Study of Sentiment Alignment
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
@@ -82,7 +91,7 @@ After PPO training, our model successfully learned to generate positive sentimen
 
 The alignment worked! But *how* did it work?
 
-## The Shocking Discovery: PPO Doesn't Remove Negative Weights
+## PPO Doesn't Remove Negative Weights
 
 Here's where our investigation revealed something surprising about how PPO actually works:
 
