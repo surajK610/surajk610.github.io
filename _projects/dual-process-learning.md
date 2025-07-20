@@ -3,7 +3,7 @@ layout: page
 title: dynamics
 description: dual process learning
 img: assets/img/learning-dynamics.png
-importance: 1
+importance: 2
 category: spring 2025
 ---
 
