@@ -28,6 +28,17 @@ We began with the simple task of matrix-vector multiplication. Much of the story
 Before diving into optimizations, let's go over the roofline model, a crucial framework for understanding performance limitations. The roofline model essentially has two zones: a memory bound zone and a compute bound zone. You would like to be in the compute bound zone in order to maximally utilize your given hardware budget.
 
 
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/cuda_programming/gpu_roofline_model.png" title="nsight systems" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Here's the naive GPU roofline model for a RTX 6000. In practice, the *blockDim* causes waves and there are weird interaction effects with things such as memory coalescing.
+</div>
+
+
+
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/img/cuda_programming/gpu_roofline_model.png" title="example image" class="img-fluid rounded z-depth-1" %}
