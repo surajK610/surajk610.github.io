@@ -51,16 +51,16 @@
 #         </ol>
 
 
-- title: Achievements
-  type: list
-  contents:
-        <ol>
-          <li>Intel International Science Fair Finalist &#10</li>
-          <li>AIME Qualifier (x2) &#10</li>
-          <li>LA Country Science Fair Overall Winner</li>
-        </ol>
+# - title: Achievements
+#   type: list
+#   contents:
+#         <ol>
+#           <li>Intel International Science Fair Finalist &#10</li>
+#           <li>AIME Qualifier (x2) &#10</li>
+#           <li>LA Country Science Fair Overall Winner</li>
+#         </ol>
 
 - title: Other Interests
   type: list
   contents:
-    - <u>Hobbies:</u> Reading, Surfing, Rock Climbing, Cooking
+    - <u>Hobbies:</u> Reading Short Stories, Surfing Reef Breaks, Cooking Various Types of Chicken, and Running Half Marathons 
